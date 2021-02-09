@@ -1,0 +1,27 @@
+{
+  "name": "battle-ships",
+  "version": "1.0.0",
+  "description": "challange by Guestline",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Dawid Studnicki",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "autoprefixer": "^9.3.1",
+    "core-js": "^2.6.12",
+    "parcel-bundler": "^1.12.4",
+    "postcss-modules": "^4.0.0",
+    "sass": "^1.29.0"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "grid": true
+      }
+    }
+  }
+}
