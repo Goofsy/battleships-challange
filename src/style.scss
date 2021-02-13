@@ -1,30 +1,71 @@
-.title {
-  text-align: center;
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  color: #333;
 }
 
-.board {
-  display: grid;
-  grid-template-columns: repeat(10, 5vmin);
-  grid-template-rows: repeat(10, 5vmin);
-  justify-content: center;
-
-  .field {
-    background-color: #3498db;
-    border: 1px solid #2980b9;
-    cursor: pointer;
-  }
-
-  .hit {
-    background-color: #ff1206;
-    border: 1px solid #bb0900;
-  }
-
-  .miss {
-    background-color: #ecf0f1;
-    border-color: #bdc3c7;
-  }
-}
-
-.info {
+.container {
+  margin: auto;
+  height: 100%;
   text-align: center;
+  .title {
+    padding: 1.5rem 0;
+    font-size: 2.5rem;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(10, 6vmin);
+    grid-template-rows: repeat(10, 6vmin);
+    justify-content: center;
+    position: relative;
+    margin-top: 7vmin;
+    font-size: 1.1rem;
+    font-weight: bold;
+
+    &__columns {
+      position: absolute;
+      display: flex;
+      top: -6vmin;
+      left: 6vmin;
+
+      .column {
+        width: 6vmin;
+        height: 6vmin;
+        line-height: 6vmin;
+        text-transform: uppercase;
+      }
+    }
+
+    &__rows {
+      position: absolute;
+
+      .row {
+        width: 6vmin;
+        height: 6vmin;
+        line-height: 6vmin;
+      }
+    }
+
+    .field {
+      background-color: #3498db;
+      border: 1px solid #2980b9;
+      cursor: pointer;
+    }
+
+    .hit {
+      background-color: #ff1206;
+      border: 1px solid #bb0900;
+    }
+
+    .miss {
+      background-color: #ecf0f1;
+      border-color: #bdc3c7;
+    }
+  }
+
+  .info {
+    padding: 1rem 0;
+  }
 }

@@ -1,8 +1,11 @@
 const board = document.querySelector('.board');
+const columnsFrame = document.querySelector('.board__columns');
+const rowsFrame = document.querySelector('.board__rows');
 const info = document.querySelector('.info');
+const container = document.querySelector('.container');
 
 const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const emptyFields = [];
 const filledFields = [];
 let shipsLength = 0;
@@ -31,6 +34,7 @@ const fillBoard = () => {
     const iString = i.toString();
     const y = i >= columns.length ? +iString[0] + 1 : 1;
     const x = i >= columns.length ? columns[+iString[1]] : columns[+iString[0]];
+    container.style.maxWidth = `${(columns.length + 2) * 6}vmin`;
     const id = x + y;
     field.id = id;
     field.classList.add('field');
@@ -39,6 +43,20 @@ const fillBoard = () => {
   }
 };
 fillBoard();
+
+const createColumnsAndRowsFrames = () => {
+  for (let i = 0; i < columns.length; i++) {
+    const column = document.createElement('div');
+    const row = document.createElement('div');
+    column.classList.add('column');
+    row.classList.add('row');
+    column.textContent = `${columns[i]}`;
+    row.textContent = `${rows[i]}`;
+    columnsFrame.appendChild(column);
+    rowsFrame.appendChild(row);
+  }
+};
+createColumnsAndRowsFrames();
 
 const renderShips = (coords, id) => {
   const randomFields = Math.floor(Math.random() * coords.length);
@@ -49,7 +67,7 @@ const renderShips = (coords, id) => {
     filledFields.push(field);
     const fieldEl = document.getElementById(field);
     fieldEl.dataset.shipId = id;
-    fieldEl.classList.add('statek');
+    fieldEl.classList.add('ship');
   });
 };
 
@@ -57,7 +75,7 @@ const reGenerateShips = () => {
   const fields = document.querySelectorAll('.field');
   fields.forEach(field => {
     delete field.dataset.shipId;
-    field.classList.remove('statek');
+    field.classList.remove('ship');
     field.classList.remove('miss');
     field.classList.remove('hit');
   });
@@ -180,7 +198,7 @@ const shoot = () => {
       shipsLength === 0
     )
       return;
-    if (e.target.classList.contains('statek')) {
+    if (e.target.classList.contains('ship')) {
       const ship = ships[e.target.dataset.shipId];
       ship.length -= 1;
       shipsLength -= 1;
