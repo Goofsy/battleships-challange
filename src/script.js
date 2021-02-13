@@ -5,8 +5,8 @@ const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const emptyFields = [];
 const filledFields = [];
-
 let shipsLength = 0;
+
 const ships = [
   {
     id: 0,
@@ -65,6 +65,14 @@ const reGenerateShips = () => {
   generateRandomShips();
 };
 
+const checkPossibleShipsPositions = (x, y, positions) => {
+  return positions.map(pos => {
+    if (filledFields.includes(pos) || filledFields.includes(x + y)) {
+      return false;
+    } else return pos;
+  });
+};
+
 const validateShips = (x, y, shipLength, i) => {
   const indexOfColumn = columns.indexOf(x);
   const indexOfRow = +y - 1;
@@ -80,86 +88,53 @@ const validateShips = (x, y, shipLength, i) => {
     (indexOfColumn - shipLength >= 0 &&
     indexOfRow - shipLength >= 0)
   ) {
-    // 4 mozliwosci
-    const posibilities = [incX, incY, decX, decY].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [
+      incX,
+      incY,
+      decX,
+      decY,
+    ]));
   } else if (
     indexOfColumn - shipLength < 0 &&
     indexOfRow + shipLength >= columns.length
   ) {
-    // incX i decY
-    const posibilities = [incX, decY].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [incX, decY]));
   } else if (
     indexOfColumn + shipLength >= columns.length &&
     indexOfRow - shipLength < 0
   ) {
-    // decX incY
-    const posibilities = [decX, incY].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [decX, incY]));
   } else if (
     indexOfColumn + shipLength >= columns.length &&
     indexOfRow + shipLength >= columns.length
   ) {
-    // decX i decY
-    const posibilities = [decX, decY].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [decX, decY]));
   } else if (indexOfColumn - shipLength < 0 && indexOfRow - shipLength < 0) {
-    // incX i incY
-    const posibilities = [incX, incY].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [incX, incY]));
   } else if (indexOfColumn + shipLength >= columns.length) {
-    // decY lub incY lub decX
-    const posibilities = [decY, incY, decX].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [
+      decY,
+      incY,
+      decX,
+    ]));
   } else if (indexOfColumn - shipLength < 0) {
-    // decY lub incY lub incX
-    const posibilities = [decY, incY, incX].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [
+      decY,
+      incY,
+      incX,
+    ]));
   } else if (indexOfRow + shipLength >= columns.length) {
-    // decY lub incX lub decX
-    const posibilities = [decY, incX, decX].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [
+      decY,
+      incX,
+      decX,
+    ]));
   } else if (indexOfRow - shipLength < 0) {
-    // incY lub incX lub decX
-    const posibilities = [incY, incX, decX].map(pos => {
-      if (filledFields.includes(pos) || filledFields.includes(x + y)) {
-        return false;
-      } else return pos;
-    });
-    return posibilities;
+    return (positionsOfShip = checkPossibleShipsPositions(x, y, [
+      incY,
+      incX,
+      decX,
+    ]));
   }
 };
 
@@ -170,27 +145,27 @@ const generateRandomShips = () => {
     const y = yArr.join('');
     shipsLength += ship.length;
 
-    const locationsOfShips = [];
+    const positionsOfShip = [];
 
     for (let i = 0; i < ship.length; i++) {
-      locationsOfShips.push(validateShips(x, y, ship.length, i));
+      positionsOfShip.push(validateShips(x, y, ship.length, i));
     }
 
-    const allPosibilities = [];
-    for (let i = 0; i < locationsOfShips[0].length; i++) {
+    const allPossiblePositions = [];
+    for (let i = 0; i < positionsOfShip[0].length; i++) {
       const arr = [];
-      locationsOfShips.forEach(shiped => {
+      positionsOfShip.forEach(shiped => {
         arr.push(shiped[i]);
       });
-      allPosibilities.push(arr);
+      allPossiblePositions.push(arr);
     }
-    const correctPosibilities = allPosibilities.filter(
+    const correctPositions = allPossiblePositions.filter(
       ship => !ship.includes(false)
     );
-    if (correctPosibilities.length === 0) {
+    if (correctPositions.length === 0) {
       reGenerateShips();
     } else {
-      renderShips(correctPosibilities, ship.id);
+      renderShips(correctPositions, ship.id);
     }
   });
 };
@@ -208,9 +183,9 @@ const shoot = () => {
     if (e.target.classList.contains('statek')) {
       const ship = ships[e.target.dataset.shipId];
       ship.length -= 1;
+      shipsLength -= 1;
       e.target.classList.add('hit');
       info.textContent = 'Hit!';
-      shipsLength -= 1;
       if (ship.length === 0) {
         info.textContent = 'Sunk!';
       }
