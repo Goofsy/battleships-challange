@@ -2,7 +2,6 @@
   "name": "battle-ships",
   "version": "1.0.0",
   "description": "challange by Guestline",
-  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
