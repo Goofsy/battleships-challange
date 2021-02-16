@@ -28,7 +28,8 @@ const ships = [
   },
 ];
 
-const fillBoard = () => {
+// Fill board
+(() => {
   for (i = 0; i < columns.length * rows.length; i++) {
     const field = document.createElement('div');
     const iString = i.toString();
@@ -41,10 +42,9 @@ const fillBoard = () => {
     emptyFields.push(id);
     board.appendChild(field);
   }
-};
-fillBoard();
-
-const createColumnsAndRowsFrames = () => {
+})();
+// Create columns and rows frames
+(() => {
   for (let i = 0; i < columns.length; i++) {
     const column = document.createElement('div');
     const row = document.createElement('div');
@@ -55,8 +55,7 @@ const createColumnsAndRowsFrames = () => {
     columnsFrame.appendChild(column);
     rowsFrame.appendChild(row);
   }
-};
-createColumnsAndRowsFrames();
+})();
 
 const renderShips = (coords, id) => {
   const randomFields = Math.floor(Math.random() * coords.length);
@@ -189,7 +188,8 @@ const generateRandomShips = () => {
 };
 generateRandomShips();
 
-const shoot = () => {
+// Shoot
+(() => {
   board.addEventListener('click', e => {
     if (
       !e.target.id ||
@@ -215,5 +215,4 @@ const shoot = () => {
       info.textContent = 'Miss!';
     }
   });
-};
-shoot();
+})();
