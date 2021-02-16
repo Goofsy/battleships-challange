@@ -13,21 +13,19 @@ let shipsLength = 0;
 const ships = [
   {
     id: 0,
-    type: 'battleShip',
     length: 5,
   },
   {
     id: 1,
-    type: 'destroyer',
     length: 4,
   },
   {
     id: 2,
-    type: 'destroyer',
     length: 4,
   },
 ];
 
+//////////////////////////// CREATE BOARD
 // Fill board
 (() => {
   for (i = 0; i < columns.length * rows.length; i++) {
@@ -70,18 +68,7 @@ const renderShips = (coords, id) => {
   });
 };
 
-const reGenerateShips = () => {
-  const fields = document.querySelectorAll('.field');
-  fields.forEach(field => {
-    delete field.dataset.shipId;
-    field.classList.remove('ship');
-    field.classList.remove('miss');
-    field.classList.remove('hit');
-  });
-  shipsLength = 0;
-  generateRandomShips();
-};
-
+//////////////////////////// VALIDATION
 const checkPossibleShipsPositions = (x, y, positions) => {
   return positions.map(pos => {
     if (filledFields.includes(pos) || filledFields.includes(x + y)) {
@@ -155,20 +142,32 @@ const validateShips = (x, y, shipLength, i) => {
   }
 };
 
+//////////////////////////// GENERATE SHIPS
+const reGenerateShips = () => {
+  const fields = document.querySelectorAll('.field');
+  fields.forEach(field => {
+    delete field.dataset.shipId;
+    field.classList.remove('ship');
+    field.classList.remove('miss');
+    field.classList.remove('hit');
+  });
+  shipsLength = 0;
+  generateRandomShips();
+};
+
 const generateRandomShips = () => {
   ships.forEach(ship => {
     const randomField = Math.floor(Math.random() * emptyFields.length);
     const [x, ...yArr] = emptyFields[randomField];
     const y = yArr.join('');
     shipsLength += ship.length;
-
     const positionsOfShip = [];
+    const allPossiblePositions = [];
 
     for (let i = 0; i < ship.length; i++) {
       positionsOfShip.push(validateShips(x, y, ship.length, i));
     }
 
-    const allPossiblePositions = [];
     for (let i = 0; i < positionsOfShip[0].length; i++) {
       const arr = [];
       positionsOfShip.forEach(shiped => {
@@ -188,7 +187,7 @@ const generateRandomShips = () => {
 };
 generateRandomShips();
 
-// Shoot
+//////////////////////////// SHOOT
 (() => {
   board.addEventListener('click', e => {
     if (
